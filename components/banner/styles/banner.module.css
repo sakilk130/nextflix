@@ -1,7 +1,7 @@
 .container {
+  position: relative;
   width: 100%;
   height: 80vh;
-  position: relative;
 }
 .bannerWrapper {
   position: absolute;
@@ -9,6 +9,7 @@
   height: 100%;
   padding-left: 50px;
   padding-right: 50px;
+  margin-top: 30px;
 }
 .nSeriesWrapper {
   display: flex;
@@ -19,7 +20,7 @@
 .nSeries {
   font-size: 50px;
   font-weight: bold;
-  color: red;
+  color: #dc2626;
   margin-right: 10px;
   margin-bottom: 0;
   margin-top: 0;
