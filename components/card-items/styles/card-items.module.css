@@ -1,0 +1,20 @@
+.container {
+  padding: 0 50px;
+  margin-bottom: 20px;
+}
+.sectionName {
+  font-size: 30px;
+}
+.cardItems {
+  display: flex;
+  gap: 5px;
+  padding-top: 1.7rem;
+  padding-bottom: 1.5rem;
+  margin-top: 1.5rem;
+  margin-right: 0.75rem;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.cardItems::-webkit-scrollbar {
+  display: none;
+}
