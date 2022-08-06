@@ -47,7 +47,7 @@ const Home: NextPage<IHome> = ({
         <Banner
           title="Clifford the red dog"
           subtitle="Watch your favorite movies and TV shows on Nextflix."
-          imageUrl="./static/images/clifford.webp"
+          imageUrl="/static/images/clifford.webp"
         />
         <CardItems
           sectionName="Disney"
