@@ -4,9 +4,9 @@ import Banner from "../components/banner";
 import CardItems from "../components/card-items";
 import Navbar from "../components/navbar";
 import { CardSize } from "../enums";
+import { IVideo } from "../interfaces";
 import { getVideos } from "../lib/videos";
 import styles from "../styles/Home.module.css";
-import { IVideo } from "../types";
 
 interface IHome {
   disneyVideos: IVideo[];

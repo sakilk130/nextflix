@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { CardSize } from "../../enums";
-import { IVideo } from "../../types";
+import { IVideo } from "../../interfaces";
 import Card from "../card";
 import styles from "./styles/card-items.module.css";
 
