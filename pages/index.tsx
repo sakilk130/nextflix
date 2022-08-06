@@ -5,19 +5,33 @@ import CardItems from "../components/card-items";
 import Navbar from "../components/navbar";
 import { CardSize } from "../enums";
 import { IVideo } from "../interfaces";
-import { getVideos } from "../lib/videos";
+import { getPopularVideos, getVideos } from "../lib/videos";
 import styles from "../styles/Home.module.css";
 
 interface IHome {
   disneyVideos: IVideo[];
+  travelVideos: IVideo[];
+  productivityVideos: IVideo[];
+  popularVideos: IVideo[];
 }
 
 export const getServerSideProps = async () => {
-  const disneyVideos: IVideo[] = await getVideos();
-  return { props: { disneyVideos } };
+  const disneyVideos: IVideo[] = await getVideos("disney trailer");
+  const travelVideos: IVideo[] = await getVideos("travel videos");
+  const productivityVideos: IVideo[] = await getVideos("productivity videos");
+  const popularVideos: IVideo[] = await getPopularVideos();
+
+  return {
+    props: { disneyVideos, travelVideos, productivityVideos, popularVideos },
+  };
 };
 
-const Home: NextPage<IHome> = ({ disneyVideos }) => {
+const Home: NextPage<IHome> = ({
+  disneyVideos,
+  travelVideos,
+  productivityVideos,
+  popularVideos,
+}) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -39,6 +53,21 @@ const Home: NextPage<IHome> = ({ disneyVideos }) => {
           sectionName="Disney"
           videos={disneyVideos}
           size={CardSize.LARGE}
+        />
+        <CardItems
+          sectionName="Travel"
+          videos={travelVideos}
+          size={CardSize.SMALL}
+        />
+        <CardItems
+          sectionName="Productivity"
+          videos={productivityVideos}
+          size={CardSize.MEDIUM}
+        />
+        <CardItems
+          sectionName="Popular"
+          videos={popularVideos}
+          size={CardSize.SMALL}
         />
       </div>
     </div>

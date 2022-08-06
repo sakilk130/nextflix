@@ -4,6 +4,8 @@
 }
 .sectionName {
   font-size: 30px;
+  margin-bottom: 0px;
+  margin-top: 0;
 }
 .cardItems {
   display: flex;
@@ -14,6 +16,7 @@
   margin-right: 0.75rem;
   overflow-x: scroll;
   overflow-y: hidden;
+  margin-top: 0px;
 }
 .cardItems::-webkit-scrollbar {
   display: none;
