@@ -34,6 +34,7 @@
 .userNameWrapper {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 .usernameArrow {
   cursor: pointer;
