@@ -1,12 +1,29 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import { FormEvent, useState } from "react";
+import { useRouter } from "next/router";
+import { FormEvent, useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
+import magic from "../../lib/magic-link";
 import styles from "./styles/login.module.css";
 
 const Login: NextPage = () => {
+  const route = useRouter();
+
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setLoading(false);
+    };
+    route.events.on("routeChangeComplete", handleRouteChange);
+    route.events.on("routeChangeError", handleRouteChange);
+    return () => {
+      route.events.off("routeChangeComplete", handleRouteChange);
+      route.events.off("routeChangeError", handleRouteChange);
+    };
+  }, [route]);
 
   const onChangeEmail = (e: FormEvent<HTMLInputElement>) => {
     setError("");
@@ -17,13 +34,21 @@ const Login: NextPage = () => {
     }
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (email === "") {
       setError("Email is required");
     }
     if (error === "") {
-      console.log("Success");
+      try {
+        setLoading(true);
+        const didToken: any = await magic.auth.loginWithMagicLink({ email });
+        if (didToken) {
+          route.push("/");
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -45,8 +70,12 @@ const Login: NextPage = () => {
             value={email}
           />
           <span className={styles.emailError}>{error}</span>
-          <button type="submit" className={styles.loginButton}>
-            Sign In
+          <button
+            type="submit"
+            className={styles.loginButton}
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Sign In"}
           </button>
         </div>
       </form>
