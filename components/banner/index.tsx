@@ -1,5 +1,6 @@
 import styles from "./styles/banner.module.css";
 import { BsFillPlayFill } from "react-icons/bs";
+import Link from "next/link";
 
 export interface IBanner {
   title: string;
@@ -20,7 +21,9 @@ const Banner = ({ title, subtitle, imageUrl }: IBanner) => {
         <div className={styles.playBtnWrapper}>
           <button className={styles.playBtn}>
             <BsFillPlayFill size={"30px"} />
-            <span>Play</span>
+            <Link href={`/video/4zH5iYM4wJo`}>
+              <a>Play</a>
+            </Link>
           </button>
         </div>
       </div>

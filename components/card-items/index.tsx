@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import Link from "next/link";
 import { CardSize } from "../../enums";
 import { IVideo } from "../../interfaces";
 import Card from "../card";
@@ -21,7 +22,11 @@ const CardItems: NextPage<ICardItems> = ({
       <div className={styles.cardItems}>
         {videos?.length > 0
           ? videos.map((video: IVideo) => (
-              <Card key={video.id} imgUrl={video.thumbnail} size={size} />
+              <Link href={`/video/${video.id}`} key={video.id}>
+                <a>
+                  <Card imgUrl={video.thumbnail} size={size} />
+                </a>
+              </Link>
             ))
           : "No videos found"}
       </div>
