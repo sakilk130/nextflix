@@ -28,14 +28,12 @@ const Navbar: NextPage<INavbar> = ({ signUp = false }) => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const { email, publicAddress } = await magic.user.getMetadata();
+        const { email } = await magic.user.getMetadata();
         if (email) {
           setUsername(email);
-        } else {
-          route.push("/login");
         }
       } catch (error) {
-        route.push("/login");
+        console.log(error);
       }
     };
     getUser();

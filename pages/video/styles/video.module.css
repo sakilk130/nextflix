@@ -1,0 +1,33 @@
+.modalContent {
+  overflow: hidden;
+}
+.player {
+}
+.videoDescription {
+  padding: 20px;
+  max-height: 35vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  display: flex;
+}
+.videoDescription::-webkit-scrollbar {
+  display: none;
+}
+.leftCol {
+  max-width: 70%;
+}
+.releaseDate {
+  color: aqua;
+}
+.movieName {
+}
+.description {
+}
+
+.rightCol {
+}
+.mututedText {
+  color: gray;
+}

@@ -9,22 +9,22 @@ function MyApp({ Component, pageProps }: AppProps) {
   const route = useRouter();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const isLoggedIn = async () => {
-      try {
-        setLoading(true);
-        const isUser = await magic.user.isLoggedIn();
-        if (isUser) {
-          route.push("/");
-        } else {
-          route.push("/login");
-        }
-      } catch (error) {
-        route.push("/login");
-      }
-    };
-    isLoggedIn();
-  }, []);
+  // useEffect(() => {
+  //   const isLoggedIn = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const isUser = await magic.user.isLoggedIn();
+  //       if (isUser) {
+  //         route.push("/");
+  //       } else {
+  //         route.push("/login");
+  //       }
+  //     } catch (error) {
+  //       route.push("/login");
+  //     }
+  //   };
+  //   isLoggedIn();
+  // }, []);
 
   useEffect(() => {
     const handleRouteChange = () => {
