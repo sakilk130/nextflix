@@ -1,11 +1,46 @@
+import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
 import Modal from "react-modal";
 import Navbar from "../../components/navbar";
+import { getVideoById } from "../../lib/videos";
 import styles from "./styles/video.module.css";
 
-const Video = () => {
+export const getStaticProps = async (context: any) => {
+  const id = context.params.id;
+  const video = await getVideoById(id);
+  return {
+    props: {
+      video: video.length ? video[0] : {},
+    },
+    revalidate: 10,
+  };
+};
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [
+      {
+        params: {
+          id: "4zH5iYM4wJo",
+        },
+      },
+    ],
+    fallback: "blocking",
+  };
+};
+
+interface IVideo {
+  video: {
+    releaseDate: string;
+    title: string;
+    description: string;
+    cast: string;
+    viewCount: number;
+  };
+}
+const Video: NextPage<IVideo> = ({ video }) => {
   const route = useRouter();
   const { id } = route.query;
 
@@ -58,48 +93,17 @@ const Video = () => {
           </div>
           <div className={styles.videoDescription}>
             <div className={styles.leftCol}>
-              <h3 className={styles.releaseDate}>2021-06-29T12:59:02Z</h3>
-              <h3 className={styles.movieName}>
-                Clifford the Big Red Dog (2021) - Official Trailer - Paramount
-                Pictures
-              </h3>
-              <p className={styles.description}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam,
-                cupiditate? Laudantium illum exercitationem quibusdam eligendi
-                nulla obcaecati eveniet ea minima maiores cupiditate aliquid
-                vel, praesentium quaerat commodi veritatis? Alias deleniti
-                reprehenderit esse delectus suscipit quo quibusdam ad placeat.
-                Obcaecati porro accusamus officiis, esse reprehenderit nostrum
-                minima ab a ullam. Perferendis tenetur, atque dignissimos
-                obcaecati dolores nostrum quos id vitae beatae asperiores,
-                expedita debitis ratione maiores. Saepe nihil facilis sunt
-                explicabo optio accusantium fugiat eligendi consequatur,
-                voluptatem dignissimos quos nostrum repellendus ducimus? Saepe
-                dolores architecto soluta ab? Nulla, corrupti non. Eum
-                consequuntur reiciendis pariatur. Suscipit itaque a et sunt
-                tempore similique doloremque quam voluptates quibusdam, earum
-                sit provident expedita debitis nulla qui perspiciatis
-                asperiores, quaerat soluta laboriosam natus facere? Obcaecati,
-                cumque pariatur harum fuga expedita odio autem nulla nihil
-                nostrum vitae accusamus deserunt est nesciunt sit, labore
-                deleniti id? Possimus, dolores nulla quos fugit repellat, sint
-                nostrum, quaerat inventore eligendi numquam assumenda.
-                Voluptatum maxime harum fugiat accusamus nobis doloribus unde
-                deleniti explicabo sapiente at quibusdam veritatis magni
-                repellat quam quis nam ullam laborum facilis est, exercitationem
-                assumenda placeat vitae? Non quibusdam ullam dicta provident
-                assumenda optio ad animi asperiores reiciendis corrupti,
-                nesciunt quae eos fuga? Cum vel provident sit labore
-                praesentium?
-              </p>
+              <h3 className={styles.releaseDate}>{video.releaseDate}</h3>
+              <h3 className={styles.movieName}>{video?.title}</h3>
+              <p className={styles.description}>{video.description}</p>
             </div>
             <div className={styles.rightCol}>
               <p>
-                <span className={styles.mututedText}>Cast:</span> Paramount
-                Pictures
+                <span className={styles.mututedText}>Cast:</span> {video.cast}
               </p>
               <p>
-                <span className={styles.mututedText}>View Count:</span> 12872019
+                <span className={styles.mututedText}>View Count:</span>{" "}
+                {video.viewCount}
               </p>
             </div>
           </div>
