@@ -7,7 +7,6 @@ import { CardSize } from "../enums";
 import { IVideo } from "../interfaces";
 import { getPopularVideos, getVideos } from "../lib/videos";
 import styles from "../styles/Home.module.css";
-
 interface IHome {
   disneyVideos: IVideo[];
   travelVideos: IVideo[];
