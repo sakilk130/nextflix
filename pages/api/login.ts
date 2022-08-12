@@ -22,19 +22,16 @@ export default async function login(req: any, res: any) {
         process.env.NEXT_PUBLIC_JWT_SECRET as string
       );
       const user = await isNewUser(token, metadata.issuer);
-      if (user.length === 0) {
-        const newUser = await insertUser(
+
+      user.length === 0 &&
+        (await insertUser(
           token,
           metadata.email,
           metadata.issuer,
           metadata.publicAddress
-        );
-        setCookie(res, token);
-        res.status(200).json({ token, isNewUser: true, newUser });
-      } else {
-        setCookie(res, token);
-        res.status(200).json({ token, isNewUser: false });
-      }
+        ));
+      setCookie(res, token);
+      res.status(200).json({ success: true, token });
     } catch (error) {
       res
         .status(500)
