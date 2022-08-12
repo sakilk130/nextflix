@@ -44,10 +44,25 @@ const Login: NextPage = () => {
         setLoading(true);
         const didToken: any = await magic.auth.loginWithMagicLink({ email });
         if (didToken) {
-          route.push("/");
+          const res = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${didToken}`,
+            },
+          });
+          const date = await res.json();
+          if (date.success) {
+            route.push("/");
+          } else {
+            setError("Something went wrong");
+          }
+        } else {
+          setError("Something went wrong");
         }
-      } catch (err) {
+      } catch (err: any) {
         console.log(err);
+        setError(err.message);
       }
     }
   };
