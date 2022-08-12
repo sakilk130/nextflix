@@ -1,5 +1,7 @@
 import { magicAdmin } from "../../lib/magic-server";
 import jwt from "jsonwebtoken";
+import { insertUser, isNewUser } from "../../lib/db/hasura";
+import setCookie from "../../lib/cookie";
 
 export default async function login(req: any, res: any) {
   if (req.method === "POST") {
@@ -19,7 +21,20 @@ export default async function login(req: any, res: any) {
         },
         process.env.NEXT_PUBLIC_JWT_SECRET as string
       );
-      res.send({ token });
+      const user = await isNewUser(token, metadata.issuer);
+      if (user.length === 0) {
+        const newUser = await insertUser(
+          token,
+          metadata.email,
+          metadata.issuer,
+          metadata.publicAddress
+        );
+        setCookie(res, token);
+        res.status(200).json({ token, isNewUser: true, newUser });
+      } else {
+        setCookie(res, token);
+        res.status(200).json({ token, isNewUser: false });
+      }
     } catch (error) {
       res
         .status(500)
