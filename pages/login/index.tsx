@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
-import magic from "../../lib/magic-link";
+import magic from "../../lib/magic-client";
 import styles from "./styles/login.module.css";
 
 const Login: NextPage = () => {

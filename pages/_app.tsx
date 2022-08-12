@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import Loader from "../components/loader";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import magic from "../lib/magic-link";
+import magic from "../lib/magic-client";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const route = useRouter();

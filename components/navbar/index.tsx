@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./styles/navbar.module.css";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { NextPage } from "next";
-import magic from "../../lib/magic-link";
+import magic from "../../lib/magic-client";
 import { useRouter } from "next/router";
 interface INavbar {
   signUp?: boolean;
