@@ -1,5 +1,9 @@
 import jwt from "jsonwebtoken";
-import { getVideoByUserId, updateVideoByUserId } from "../../lib/db/hasura";
+import {
+  getVideoByUserId,
+  insertVideo,
+  updateVideoByUserId,
+} from "../../lib/db/hasura";
 
 export default async function video(req: any, res: any) {
   if (req.method === "POST") {
@@ -26,7 +30,12 @@ export default async function video(req: any, res: any) {
       const video = await getVideoByUserId(user_id, video_id, token);
 
       if (video.length === 0) {
-        //TODO: create video
+        const newVideo = await insertVideo(token, {
+          video_id,
+          user_id,
+          favourited: 0,
+        });
+        res.status(200).json({ success: true, data: newVideo });
       } else {
         const updateVideo = await updateVideoByUserId(token, {
           video_id,
@@ -34,7 +43,7 @@ export default async function video(req: any, res: any) {
           favourited: 1,
           watched: true,
         });
-        res.status(200).json({ success: true, updateVideo });
+        res.status(200).json({ success: true, data: updateVideo });
       }
     } catch (error) {
       res

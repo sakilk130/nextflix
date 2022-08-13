@@ -1,3 +1,34 @@
+export async function insertVideo(
+  token: string,
+  { video_id, user_id, favourited, watched = true }: any
+) {
+  try {
+    const operationsDoc = `
+    mutation insertVideo($favourited : Int!, $user_id : String!, $video_id : String!, $watched: Boolean!) {
+      insert_starts(objects: {favourited: $favourited, user_id: $user_id, video_id: $video_id, watched: $watched}) {
+        returning {
+          favourited
+          id
+          user_id
+          video_id
+          watched
+        }
+      }
+    }
+  `;
+
+    const response = await queryHasuraGQL(
+      operationsDoc,
+      "insertVideo",
+      { video_id, user_id, favourited, watched },
+      token
+    );
+    return response?.data?.insert_starts?.returning[0];
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function updateVideoByUserId(
   token: string,
   { video_id, user_id, favourited, watched }: any
@@ -28,7 +59,7 @@ export async function updateVideoByUserId(
       token
     );
 
-    return response.data.update_starts;
+    return response?.data.update_starts?.returning[0];
   } catch (error) {
     console.log(error);
   }
