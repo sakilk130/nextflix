@@ -3,6 +3,25 @@
 }
 .player {
 }
+
+.likeDislike {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  top: 35%;
+  position: absolute;
+  padding: 20px;
+}
+
+.btnWrapper {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background-color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
 .videoDescription {
   padding: 20px;
   max-height: 35vh;

@@ -3,6 +3,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
 import Modal from "react-modal";
+import DislikeBtn from "../../components/dislike-btn";
+import LikeBtn from "../../components/like-btn";
 import Navbar from "../../components/navbar";
 import { getVideoById } from "../../lib/videos";
 import styles from "./styles/video.module.css";
@@ -80,17 +82,24 @@ const Video: NextPage<IVideo> = ({ video }) => {
         }}
       >
         <div className={styles.modalContent}>
-          <div>
-            <iframe
-              className={styles.player}
-              id="ytplayer"
-              type="text/html"
-              width="100%"
-              height="360"
-              src={`https://www.youtube.com/embed/${id}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
-              frameBorder="0"
-            ></iframe>
+          <iframe
+            className={styles.player}
+            id="ytplayer"
+            type="text/html"
+            width="100%"
+            height="360"
+            src={`https://www.youtube.com/embed/${id}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
+            frameBorder="0"
+          ></iframe>
+          <div className={styles.likeDislike}>
+            <button className={styles.btnWrapper}>
+              <LikeBtn />
+            </button>
+            <button className={styles.btnWrapper}>
+              <DislikeBtn selected={true} />
+            </button>
           </div>
+
           <div className={styles.videoDescription}>
             <div className={styles.leftCol}>
               <h3 className={styles.releaseDate}>{video.releaseDate}</h3>
