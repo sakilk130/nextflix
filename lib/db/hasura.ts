@@ -1,3 +1,39 @@
+export async function updateVideoByUserId(
+  token: string,
+  { video_id, user_id, favourited, watched }: any
+) {
+  try {
+    const operationsDoc = `
+    mutation updateVideo($favourited: Int!, $user_id: String!, $watched: Boolean!, $video_id: String!) {
+      update_starts(
+        _set: {watched: $watched, favourited: $favourited}, 
+        where: {
+          user_id: {_eq: $user_id}, 
+          video_id: {_eq: $video_id}
+        }) {
+        returning {
+          favourited,
+          user_id,
+          watched,
+          video_id
+        }
+      }
+    }
+    `;
+
+    const response = await queryHasuraGQL(
+      operationsDoc,
+      "updateVideo",
+      { video_id, user_id, favourited, watched },
+      token
+    );
+
+    return response.data.update_starts;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getVideoByUserId(
   user_id: string,
   video_id: string,

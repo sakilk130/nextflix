@@ -1,10 +1,12 @@
 import jwt from "jsonwebtoken";
-import { getVideoByUserId } from "../../lib/db/hasura";
+import { getVideoByUserId, updateVideoByUserId } from "../../lib/db/hasura";
 
 export default async function video(req: any, res: any) {
   if (req.method === "POST") {
     try {
       const token = req.cookies.token;
+      const video_id = req.query.video_id;
+
       if (!token) {
         res.status(401).json({ success: false, message: "Unauthorized" });
         return;
@@ -19,12 +21,21 @@ export default async function video(req: any, res: any) {
         res.status(401).json({ success: false, message: "Unauthorized" });
         return;
       }
-      const video_id = "4zH5iYM4wJo"; //dummy video id
+
       const user_id = decode?.issuer;
+      const video = await getVideoByUserId(user_id, video_id, token);
 
-      const response = await getVideoByUserId(user_id, video_id, token);
-
-      res.status(200).json({ success: true, data: response });
+      if (video.length === 0) {
+        //TODO: create video
+      } else {
+        const updateVideo = await updateVideoByUserId(token, {
+          video_id,
+          user_id,
+          favourited: 1,
+          watched: true,
+        });
+        res.status(200).json({ success: true, updateVideo });
+      }
     } catch (error) {
       res
         .status(500)
