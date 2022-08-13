@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import DislikeBtn from "../../components/dislike-btn";
 import LikeBtn from "../../components/like-btn";
@@ -67,21 +67,25 @@ const Video: NextPage<IVideo> = ({ video }) => {
     const value = !like;
     setLike(value);
     setDislike(false);
-
-    const response = await likeAndDislike(value, false);
-    const data = await response.json();
-    console.log(data);
+    await likeAndDislike(value, false);
   };
 
   const dislikeHandler = async () => {
     const value = !dislike;
     setDislike(value);
     setLike(false);
-
-    const response = await likeAndDislike(false, value);
-    const data = await response.json();
-    console.log(data);
+    await likeAndDislike(false, value);
   };
+
+  useEffect(() => {
+    const fetchVideo = async () => {
+      const res = await fetch(`/api/video?video_id=${id}`);
+      const data = await res.json();
+      setLike(data?.data?.favourited === 1);
+      setDislike(data?.data?.favourited === 2);
+    };
+    fetchVideo();
+  }, []);
 
   return (
     <div className={styles.container}>

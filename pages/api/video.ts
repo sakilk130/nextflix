@@ -6,31 +6,29 @@ import {
 } from "../../lib/db/hasura";
 
 export default async function video(req: any, res: any) {
-  if (req.method === "POST") {
-    try {
-      const token = req.cookies.token;
-      if (!token) {
-        res.status(401).json({ success: false, message: "Unauthorized" });
-        return;
-      }
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      res.status(401).json({ success: false, message: "Unauthorized" });
+      return;
+    }
+    const video_id =
+      req.method === "POST" ? req.body.video_id : req.query.video_id;
 
-      const { video_id, favourited, watched = true } = req.body;
-      if (video_id === undefined || favourited === undefined) {
-        throw new Error("Video not found");
-      }
+    const decode: any = jwt.verify(
+      token,
+      process.env.NEXT_PUBLIC_JWT_SECRET as string
+    );
 
-      const decode: any = jwt.verify(
-        token,
-        process.env.NEXT_PUBLIC_JWT_SECRET as string
-      );
+    if (!decode) {
+      res.status(401).json({ success: false, message: "Unauthorized" });
+      return;
+    }
 
-      if (!decode) {
-        res.status(401).json({ success: false, message: "Unauthorized" });
-        return;
-      }
-
-      const user_id = decode?.issuer;
-      const video = await getVideoByUserId(user_id, video_id, token);
+    const user_id = decode?.issuer;
+    const video = await getVideoByUserId(user_id, video_id, token);
+    if (req.method === "POST") {
+      const { favourited, watched = true } = req.body;
 
       if (video.length === 0) {
         const newVideo = await insertVideo(token, {
@@ -49,12 +47,14 @@ export default async function video(req: any, res: any) {
         });
         res.status(200).json({ success: true, data: updateVideo });
       }
-    } catch (error: any) {
-      res.status(500).json({ success: false, message: error.message });
+    } else {
+      if (video.length === 0) {
+        res.status(200).json({ success: true, data: null });
+      } else {
+        res.status(200).json({ success: true, data: video[0] });
+      }
     }
-  } else {
-    res
-      .status(400)
-      .json({ success: false, message: "This route support only POST" });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
   }
 }
