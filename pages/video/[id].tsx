@@ -48,21 +48,27 @@ const Video: NextPage<IVideo> = ({ video }) => {
   const [like, setLike] = useState(false);
   const [dislike, setDislike] = useState(false);
 
-  const likeHandler = async () => {
-    const value = !like;
-    setLike(value);
-    setDislike(false);
-    const response = await fetch(`/api/video`, {
+  const likeAndDislike = async (like: boolean, dislike: boolean) => {
+    const value = like ? 1 : dislike ? 2 : 0;
+
+    return await fetch(`/api/video`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         video_id: id,
-        favourited: value ? 1 : 0,
+        favourited: value,
       }),
     });
+  };
 
+  const likeHandler = async () => {
+    const value = !like;
+    setLike(value);
+    setDislike(false);
+
+    const response = await likeAndDislike(value, false);
     const data = await response.json();
     console.log(data);
   };
@@ -72,16 +78,7 @@ const Video: NextPage<IVideo> = ({ video }) => {
     setDislike(value);
     setLike(false);
 
-    const response = await fetch(`/api/video`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        video_id: id,
-        favourited: value ? 2 : 0,
-      }),
-    });
+    const response = await likeAndDislike(false, value);
     const data = await response.json();
     console.log(data);
   };
