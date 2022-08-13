@@ -59,7 +59,7 @@ export async function updateVideoByUserId(
       token
     );
 
-    return response?.data.update_starts?.returning[0];
+    return response?.data?.update_starts?.returning[0];
   } catch (error) {
     console.log(error);
   }

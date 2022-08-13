@@ -9,11 +9,14 @@ export default async function video(req: any, res: any) {
   if (req.method === "POST") {
     try {
       const token = req.cookies.token;
-      const video_id = req.query.video_id;
-
       if (!token) {
         res.status(401).json({ success: false, message: "Unauthorized" });
         return;
+      }
+
+      const { video_id, favourited, watched = true } = req.body;
+      if (video_id === undefined || favourited === undefined) {
+        throw new Error("Video not found");
       }
 
       const decode: any = jwt.verify(
@@ -33,22 +36,21 @@ export default async function video(req: any, res: any) {
         const newVideo = await insertVideo(token, {
           video_id,
           user_id,
-          favourited: 0,
+          favourited,
+          watched,
         });
         res.status(200).json({ success: true, data: newVideo });
       } else {
         const updateVideo = await updateVideoByUserId(token, {
           video_id,
           user_id,
-          favourited: 1,
-          watched: true,
+          favourited,
+          watched,
         });
         res.status(200).json({ success: true, data: updateVideo });
       }
-    } catch (error) {
-      res
-        .status(500)
-        .json({ success: false, message: "Internal Server Error" });
+    } catch (error: any) {
+      res.status(500).json({ success: false, message: error.message });
     }
   } else {
     res
