@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import DislikeBtn from "../../components/dislike-btn";
 import LikeBtn from "../../components/like-btn";
@@ -45,6 +45,17 @@ interface IVideo {
 const Video: NextPage<IVideo> = ({ video }) => {
   const route = useRouter();
   const { id } = route.query;
+  const [like, setLike] = useState(false);
+  const [dislike, setDislike] = useState(false);
+
+  const likeHandler = () => {
+    setLike(!like);
+    setDislike(false);
+  };
+  const dislikeHandler = () => {
+    setDislike(!dislike);
+    setLike(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -92,11 +103,11 @@ const Video: NextPage<IVideo> = ({ video }) => {
             frameBorder="0"
           ></iframe>
           <div className={styles.likeDislike}>
-            <button className={styles.btnWrapper}>
-              <LikeBtn />
+            <button className={styles.btnWrapper} onClick={likeHandler}>
+              <LikeBtn selected={like} />
             </button>
-            <button className={styles.btnWrapper}>
-              <DislikeBtn selected={true} />
+            <button className={styles.btnWrapper} onClick={dislikeHandler}>
+              <DislikeBtn selected={dislike} />
             </button>
           </div>
 

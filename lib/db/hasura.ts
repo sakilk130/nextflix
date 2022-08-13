@@ -1,3 +1,37 @@
+export async function getVideoByUserId(
+  user_id: string,
+  video_id: string,
+  token: string
+) {
+  try {
+    const operationsDoc = `
+    query getVideoByUserId($video_id: String!,$user_id: String!) {
+      starts(where: {video_id: {_eq: $video_id}, user_id: {_eq: $user_id}}) {
+        favourited
+        id
+        user_id
+        video_id
+        watched
+      }
+    }
+  `;
+
+    const response = await queryHasuraGQL(
+      operationsDoc,
+      "getVideoByUserId",
+      {
+        video_id,
+        user_id,
+      },
+      token
+    );
+
+    return response.data?.starts;
+  } catch (error) {
+    console.log("error", error);
+  }
+}
+
 export async function isNewUser(token: string, issuer: string) {
   try {
     const operationsDoc = `
