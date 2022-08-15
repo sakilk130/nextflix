@@ -1,3 +1,25 @@
+export async function watchItAgain(token: string, user_id: string) {
+  try {
+    const operationsDoc = `
+    query watchItAgain ($user_id:String!){
+      starts(where: {user_id: {_eq: $user_id}, watched: {_eq: true}}) {
+        video_id
+      }
+    }
+  `;
+
+    const response = await queryHasuraGQL(
+      operationsDoc,
+      "watchItAgain",
+      { user_id },
+      token
+    );
+    return response?.data?.starts;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function insertVideo(
   token: string,
   { video_id, user_id, favourited, watched = true }: any
