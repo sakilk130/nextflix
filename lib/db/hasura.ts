@@ -15,7 +15,7 @@ export async function getMyList(token: string, user_id: string) {
     );
     return response.data?.starts;
   } catch (error) {
-    console.log(error);
+    console.log("Error to get my list", error);
   }
 }
 
@@ -37,7 +37,7 @@ export async function watchItAgain(token: string, user_id: string) {
     );
     return response?.data?.starts;
   } catch (error) {
-    console.log(error);
+    console.log("Error to get watch it again", error);
   }
 }
 
@@ -68,7 +68,7 @@ export async function insertVideo(
     );
     return response?.data?.insert_starts?.returning[0];
   } catch (error) {
-    console.log(error);
+    console.log("Error to insert video", error);
   }
 }
 
@@ -104,7 +104,7 @@ export async function updateVideoByUserId(
 
     return response?.data?.update_starts?.returning[0];
   } catch (error) {
-    console.log(error);
+    console.log("Error to update video", error);
   }
 }
 
@@ -138,7 +138,7 @@ export async function getVideoByUserId(
 
     return response.data?.starts;
   } catch (error) {
-    console.log("error", error);
+    console.log("Error to get video by user id", error);
   }
 }
 
@@ -166,7 +166,7 @@ export async function isNewUser(token: string, issuer: string) {
 
     return response.data.users;
   } catch (error) {
-    console.log("isNewUser error", error);
+    console.log("Error to get user", error);
   }
 }
 
@@ -201,7 +201,7 @@ export async function insertUser(
     );
     return response?.data?.insert_users?.returning[0];
   } catch (error) {
-    console.log("insertUser error", error);
+    console.log("Error to insert user", error);
   }
 }
 
@@ -211,21 +211,25 @@ async function queryHasuraGQL(
   variables: any,
   token: string
 ) {
-  const result = await fetch(
-    process.env.NEXT_PUBLIC_HASURA_GRAPHQL_URL as string,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        query: operationsDoc,
-        variables: variables,
-        operationName: operationName,
-      }),
-    }
-  );
+  try {
+    const result = await fetch(
+      process.env.NEXT_PUBLIC_HASURA_GRAPHQL_URL as string,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          query: operationsDoc,
+          variables: variables,
+          operationName: operationName,
+        }),
+      }
+    );
 
-  return await result.json();
+    return await result.json();
+  } catch (error) {
+    console.log("Error to query hasura", error);
+  }
 }

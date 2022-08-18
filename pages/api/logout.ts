@@ -18,7 +18,7 @@ export default async function logout(req: any, res: any) {
     res.writeHead(302, { Location: "/login" });
     res.end();
   } catch (error) {
-    console.error({ error });
+    console.error("/api/logout", error);
     res.status(401).json({ message: "User is not logged in" });
   }
 }

@@ -14,7 +14,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       try {
         setLoading(true);
         const isUser = await magic.user.isLoggedIn();
-        console.log(isUser);
         if (isUser) {
           route.push("/");
         } else {
