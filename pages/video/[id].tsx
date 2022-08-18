@@ -126,7 +126,6 @@ const Video: NextPage<IVideo> = ({ video }) => {
           <iframe
             className={styles.player}
             id="ytplayer"
-            // type="text/html"
             width="100%"
             height="360"
             src={`https://www.youtube.com/embed/${id}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
