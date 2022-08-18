@@ -1,0 +1,56 @@
+.container {
+  background-image: linear-gradient(rgb(0 0 0 / 60%), rgb(0 0 0 / 60%)),
+    url(/static/images/background.jpg);
+  background-size: cover;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
+
+.loginContainer {
+  margin-top: 10rem;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+  padding: 30px;
+  min-width: 360px;
+  min-height: 321px;
+}
+
+.loginTitle {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 0px;
+}
+
+.emailInput {
+  height: 40px;
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 5px;
+}
+.emailError {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.loginButton {
+  margin-top: 30px;
+  height: 40px;
+  background-color: red;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.loginButton:hover {
+  background-color: #dc2626;
+}
