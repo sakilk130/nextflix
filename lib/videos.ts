@@ -1,4 +1,4 @@
-import videoData from "../data/videos.json";
+import videoData from "../data/videos.json"; //development
 import { getMyList, watchItAgain } from "./db/hasura";
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 
@@ -13,7 +13,9 @@ const getVideoData = async (url: string): Promise<any> => {
 export const getCommonVideos = async (url: string): Promise<any> => {
   try {
     const isDev = process.env.DEVELOPMENT;
-    const videos = isDev ? videoData : await getVideoData(url);
+    console.log(process.env.DEVELOPMENT);
+    // const videos = isDev ? videoData : await getVideoData(url); //development
+    const videos = await getVideoData(url); //production
 
     if (videos?.error) {
       return [];
