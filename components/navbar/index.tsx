@@ -1,11 +1,11 @@
+import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import styles from "./styles/navbar.module.css";
-import { RiArrowDropDownLine } from "react-icons/ri";
-import { NextPage } from "next";
-import magic from "../../lib/magic-client";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import magic from "../../lib/magic-client";
+import styles from "./styles/navbar.module.css";
 interface INavbar {
   signUp?: boolean;
 }
@@ -15,13 +15,21 @@ const Navbar: NextPage<INavbar> = ({ signUp = false }) => {
 
   const [showSignOut, setShowSignOut] = useState(false);
   const [username, setUsername] = useState("");
+  const [didToken, setDidToken] = useState("");
 
   const logOutHandler = async () => {
     try {
-      await magic.user.logout();
-      route.push("/login");
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const res = await response.json();
     } catch (error) {
-      console.log(error);
+      console.error("Error logging out", error);
+      route.push("/login");
     }
   };
 
@@ -29,6 +37,10 @@ const Navbar: NextPage<INavbar> = ({ signUp = false }) => {
     const getUser = async () => {
       try {
         const { email } = await magic.user.getMetadata();
+        const didToken = await magic.user.getIdToken();
+        if (didToken) {
+          setDidToken(didToken);
+        }
         if (email) {
           setUsername(email);
         }

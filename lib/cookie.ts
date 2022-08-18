@@ -11,3 +11,12 @@ export default function setCookie(res: any, token: string) {
   });
   res.setHeader("Set-Cookie", setCookie);
 }
+
+export const removeTokenCookie = (res: any) => {
+  const val = cookie.serialize("token", "", {
+    maxAge: -1,
+    path: "/",
+  });
+
+  res.setHeader("Set-Cookie", val);
+};
