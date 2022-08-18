@@ -1,3 +1,24 @@
+export async function getMyList(token: string, user_id: string) {
+  try {
+    const operationsDoc = `
+    query getMyList($user_id: String!) {
+      starts(where: {favourited: {_eq: 1}, user_id: {_eq: $user_id}}) {
+        video_id
+      }
+    }`;
+
+    const response = await queryHasuraGQL(
+      operationsDoc,
+      "getMyList",
+      { user_id },
+      token
+    );
+    return response.data?.starts;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function watchItAgain(token: string, user_id: string) {
   try {
     const operationsDoc = `

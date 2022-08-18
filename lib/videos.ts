@@ -1,5 +1,5 @@
 import videoData from "../data/videos.json";
-import { watchItAgain } from "./db/hasura";
+import { getMyList, watchItAgain } from "./db/hasura";
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 
 const getVideoData = async (url: string): Promise<any> => {
@@ -55,6 +55,16 @@ export const getVideoById = (id: string) => {
 
 export const getWatchItAgainVideos = async (token: string, user_id: string) => {
   const videos: any = await watchItAgain(token, user_id);
+  return videos.map((video: any) => {
+    return {
+      id: video.video_id,
+      thumbnail: `https://i.ytimg.com/vi/${video.video_id}/maxresdefault.jpg`,
+    };
+  });
+};
+
+export const getMyLists = async (token: string, user_id: string) => {
+  const videos: any = await getMyList(token, user_id);
   return videos.map((video: any) => {
     return {
       id: video.video_id,

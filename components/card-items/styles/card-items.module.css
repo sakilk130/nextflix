@@ -21,3 +21,7 @@
 .cardItems::-webkit-scrollbar {
   display: none;
 }
+.wrap {
+  flex-wrap: wrap;
+  gap: 20px;
+}

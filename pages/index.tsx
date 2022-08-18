@@ -23,8 +23,17 @@ interface IHome {
 
 export const getServerSideProps = async (context: any) => {
   const token = context.req.cookies.token;
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
   const decode = decodeToken(token);
   const user_id = decode?.issuer;
+
   if (!user_id) {
     return {
       redirect: {
@@ -33,6 +42,7 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
+
   const watchVideos = await getWatchItAgainVideos(token, user_id);
   const disneyVideos: IVideo[] = await getVideos("disney trailer");
   const travelVideos: IVideo[] = await getVideos("travel videos");
